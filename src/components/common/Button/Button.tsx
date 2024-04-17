@@ -24,8 +24,3 @@ export function Button({ variant = ButtonVariant.Default, children, ...rest }: I
   }
   return <button className={buttonClass} {...rest}>{children}</button>
 }
-// export const Button: React.FC<IButton> = ({ children, ...rest }) => {
-//   return (
-//     <button className={styles.buttonBase} {...rest}>{children}</button>
-//   )
-// }
