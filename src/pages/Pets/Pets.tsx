@@ -7,12 +7,13 @@ import { Skeleton } from "../../components/common/Skeleton";
 import { Grid } from "../../components/layout/Grid";
 import { usePetList } from "../../hooks/usetPetList";
 import styles from "./Pets.module.css";
-import { Button } from "../../components/common/Button";
+import { Button, ButtonVariant } from "../../components/common/Button";
 import { filterColumns } from "./Pets.constants";
-import { FormEvent } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import { GetPetsRequest } from "../../interfaces/pet";
 
 export function Pets() {
+  const [isButtonEnabled, setIsButtonEnabled] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const urlParams = {
     page: searchParams.get("page") ? Number(searchParams.get("page")) : 1,
@@ -52,13 +53,24 @@ export function Pets() {
     const formValues = getFormValue(event.target as HTMLFormElement);
     const newSearchParams = updateSearchParams(formValues);
     setSearchParams(newSearchParams);
+    setIsButtonEnabled(false);
+  }
+
+  function checkButtonStatus(event: ChangeEvent<HTMLFormElement>) {
+    const { type, size, gender } = getFormValue(event.target.form);
+
+    if (type !== urlParams.type || size !== urlParams.size || gender !== urlParams.gender) {
+      setIsButtonEnabled(true);
+    } else {
+      setIsButtonEnabled(false);
+    }
   }
 
   return (
     <Grid>
       <div className={styles.container}>
         <Header />
-        <form className={styles.filters} onSubmit={applyFilters}>
+        <form className={styles.filters} onSubmit={applyFilters} onChange={checkButtonStatus}>
           <div className={styles.columns}>
             {filterColumns.map((filterColumn) => (
               <div key={filterColumn.name} className={styles.column}>
@@ -71,10 +83,14 @@ export function Pets() {
               </div>
             ))}
           </div>
-          <Button type="submit">Buscar</Button>
+          <Button
+            variant={!isButtonEnabled ? ButtonVariant.Disabled : ButtonVariant.Default}
+            type="submit">
+            Buscar
+          </Button>
         </form>
         {
-          isLoading && <Skeleton containerClassName={styles.sekeleton} count={10} />
+          isLoading && <Skeleton containerClassName={styles.skeleton} count={10} />
         }
         <main className={styles.list}>
           {
