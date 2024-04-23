@@ -6,7 +6,7 @@ export async function getPets(params?: GetPetsRequest): Promise<GetPetsResponse>
     const response = await httpClient.get("/pet", { params });
     return response.data;
   } catch (error) {
-    console.log("Erro ao buscar pets", error);
+    console.error("Erro ao buscar pets", error);
     throw error;
   }
 }
