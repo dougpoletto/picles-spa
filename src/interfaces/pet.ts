@@ -8,6 +8,10 @@ export interface IPet {
   photo: string
 }
 
+export type AddPetRequest = Omit<IPet, "id" | "photo"> & {
+
+}
+
 export type GetPetsRequest = Partial<Pick<IPet, "type" | "size" | "gender">> & {
   page?: number;
 }

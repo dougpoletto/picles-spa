@@ -1,4 +1,4 @@
-import { SelectHTMLAttributes } from "react";
+import { forwardRef, Ref, SelectHTMLAttributes } from "react";
 import styles from "./Select.module.css";
 
 interface ISelect extends SelectHTMLAttributes<HTMLSelectElement> {
@@ -9,11 +9,11 @@ interface ISelect extends SelectHTMLAttributes<HTMLSelectElement> {
   }[]
 }
 
-export function Select({ label, options, ...rest }: ISelect) {
+function ForwardSelect({ label, options, ...rest }: ISelect, ref: Ref<HTMLSelectElement>) {
   return (
     <div className={styles.selectGroup}>
       <label>{label}</label>
-      <select {...rest}>
+      <select className={styles.selectBase} ref={ref} {...rest}>
         {options.map((option) => (
           <option key={option.value} value={option.value}>{option.text}</option>
         ))}
@@ -21,3 +21,5 @@ export function Select({ label, options, ...rest }: ISelect) {
     </div>
   )
 }
+
+export const Select = forwardRef(ForwardSelect);

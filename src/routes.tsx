@@ -41,6 +41,10 @@ const router = createBrowserRouter([
             element: <PetList />
           },
           {
+            path: "/admin/pets/new",
+            element: <PetForm />
+          },
+          {
             path: "/admin/pets/:id",
             element: <PetForm />
           }
